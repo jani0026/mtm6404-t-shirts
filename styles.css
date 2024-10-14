@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .tshirts-store {
+    text-align: center;
+  }
+  
+  .tshirt {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    width: 200px;
+    text-align: left;
+  }
+  
+  .tshirt img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .tshirt-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
