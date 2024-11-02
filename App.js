@@ -1,7 +1,57 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import tshirts from '../my-app/src/t-shirts'; // Adjust the import path as needed
-import './styles.css'; // Optional: import your styles if you have a stylesheet
+
+const style = document.createElement('style');
+style.textContent = `
+.tshirts-store {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tshirt-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.tshirt {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+select {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+button {
+  padding: 5px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.tshirt img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+`;
+document.head.appendChild(style);
+
 
 function TShirt({ tshirt, onBuy }) {
   const [quantity, setQuantity] = React.useState(1);
@@ -9,67 +59,169 @@ function TShirt({ tshirt, onBuy }) {
   const handleBuy = () => {
     if (quantity > 0 && quantity <= tshirt.stock) {
       onBuy(tshirt.title, quantity);
-      setQuantity(1); // Reset quantity after purchase
+      setQuantity(1);
     }
   };
 
-  return (
-    <div className="tshirt">
-      <h3>{tshirt.title}</h3>
-      <img src={require(`./images/${tshirt.image}`).default} alt={tshirt.title} />
-      <p>Price: ${tshirt.price.toFixed(2)}</p>
-      <p>Remaining Stock: {tshirt.stock > 0 ? tshirt.stock : 'Out of Stock'}</p>
-      {tshirt.stock > 0 && (
-        <>
-          <select value={quantity} onChange={(e) => setQuantity(Number(e.target.value))}>
-            {[...Array(tshirt.stock)].map((_, index) => (
-              <option key={index + 1} value={index + 1}>
-                {index + 1}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleBuy}>Buy</button>
-        </>
-      )}
-    </div>
+  return React.createElement(
+    'div',
+    { className: 'tshirt' },
+    React.createElement('h3', null, tshirt.title),
+    React.createElement('img', {
+      src: tshirt.image,
+      alt: tshirt.title
+    }),
+    React.createElement('p', null, `Price: $${tshirt.price.toFixed(2)}`),
+    React.createElement(
+      'p',
+      null,
+      `Remaining Stock: ${tshirt.stock > 0 ? tshirt.stock : 'Out of Stock'}`
+    ),
+    tshirt.stock > 0 && React.createElement(
+      React.Fragment,
+      null,
+      React.createElement(
+        'select',
+        {
+          value: quantity,
+          onChange: (e) => setQuantity(Number(e.target.value))
+        },
+        [...Array(tshirt.stock)].map((_, index) =>
+          React.createElement(
+            'option',
+            {
+              key: index + 1,
+              value: index + 1
+            },
+            index + 1
+          )
+        )
+      ),
+      React.createElement(
+        'button',
+        { onClick: handleBuy },
+        'Buy'
+      )
+    )
   );
 }
+
 
 function App() {
-  const [items, setItems] = React.useState(tshirts);
+  const initialTshirts = [
+    {
+      title: 'Blue T-Shirt',
+      image: './images/blue-t-shirt.jpg',
+      price: 7.99,
+      stock: 4,
+      quantity: 1
+    },
+    {
+      title: 'Bright Purple T-Shirt',
+      image: './images/bright-purple-t-shirt.jpg',
+      price: 5.99,
+      stock: 1,
+      quantity: 1
+    },
+    {
+      title: 'Cobalt Blue T-Shirt',
+      image: './images/cobalt-blue-t-shirt.jpg',
+      price: 9.99,
+      stock: 5,
+      quantity: 1
+    },
+    {
+      title: 'Green T-Shirt',
+      image: './images/green-t-shirt.jpg',
+      price: 6.99,
+      stock: 0,
+      quantity: 1
+    },
+    {
+      title: 'Grey T-Shirt',
+      image: './images/blue-t-shirt.jpg',
+      price: 4.99,
+      stock: 2,
+      quantity: 1
+    },
+    {
+      title: 'Light Green T-Shirt',
+      image: './images/light-green-t-shirt.jpg',
+      price: 7.99,
+      stock: 4,
+      quantity: 1
+    },
+    {
+      title: 'Purple T-Shirt',
+      image: './images/purple-t-shirt.jpg',
+      price: 7.99,
+      stock: 0,
+      quantity: 1
+    },
+    {
+      title: 'Red T-Shirt',
+      image: './images/red-t-shirt.jpg',
+      price: 6.99,
+      stock: 3,
+      quantity: 1
+    },
+    {
+      title: 'Teal T-Shirt',
+      image: './images/teal-t-shirt.jpg',
+      price: 7.99,
+      stock: 2,
+      quantity: 1
+    }
+  ];
+
+  const [items, setItems] = React.useState(initialTshirts);
 
   const handleBuy = (title, quantity) => {
-    setItems((prevItems) => {
-      // Ensure that prevItems is an array before attempting to map
-      if (!Array.isArray(prevItems)) {
-        console.error('prevItems is not an array:', prevItems);
-        return []; // or handle the error appropriately
-      }
-      return prevItems.map((item) =>
+    setItems((prevItems) =>
+      prevItems.map((item) =>
         item.title === title ? { ...item, stock: item.stock - quantity } : item
-      );
-    });
+      )
+    );
   };
 
-  return (
-    <div className="tshirts-store">
-      <h1>T-Shirt Store</h1>
-      <div className="tshirt-list">
-        {/* Ensure items is an array before mapping */}
-        {Array.isArray(items) ? (
-          items.map((tshirt) => (
-            <TShirt key={tshirt.title} tshirt={tshirt} onBuy={handleBuy} />
-          ))
-        ) : (
-          <p>No items available</p>
-        )}
-      </div>
-    </div>
+  return React.createElement(
+    'div',
+    { className: 'tshirts-store' },
+    React.createElement('h1', null, 'T-Shirt Store'),
+    React.createElement(
+      'div',
+      { className: 'tshirt-list' },
+      items.map((tshirt) =>
+        React.createElement(TShirt, {
+          key: tshirt.title,
+          tshirt: tshirt,
+          onBuy: handleBuy
+        })
+      )
+    )
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+
+document.body.innerHTML = '<div id="root"></div>';
 
 
-export default App;
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.crossOrigin = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+
+Promise.all([
+  loadScript('https://unpkg.com/react@18/umd/react.development.js'),
+  loadScript('https://unpkg.com/react-dom@18/umd/react-dom.development.js')
+]).then(() => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(React.createElement(App));
+});

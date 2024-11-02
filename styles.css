@@ -1,30 +1,42 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  
-  .tshirts-store {
-    text-align: center;
-  }
-  
-  .tshirt {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-    display: inline-block;
-    width: 200px;
-    text-align: left;
-  }
-  
-  .tshirt img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .tshirt-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
+/* styles.css */
+.tshirts-store {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tshirt-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.tshirt {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+select {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+button {
+  padding: 5px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
